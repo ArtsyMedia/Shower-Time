@@ -129,22 +129,23 @@
         totalms = totalms + (Object.values(i)[0]);
       }
       totalmin = moment.duration(totalms, 'milliseconds').asMinutes();
-      document.getElementById('phone').innerHTML = '<h1 id="curtask"></h1>' + '<br />' + '<h1 id="timer"></h1>';
+      document.getElementById('phone').innerHTML = '<h1 id="curtask"></h1>' + '<br />' + '<h1 id="timer" style="visibility: hidden"></h1>';
       var endtime = new Date().getTime();
       var curiter = 0;
       var x = setInterval(function() {
         var now = new Date().getTime();
         var distance = endtime - now;
         var formed = convertMsToTime(distance);
-        document.getElementById('timer').innerHTML = formed;
-        document.getElementById('curtask').innerHTML = curtask;
         if (distance <= 0) {
           curdata = userdata[curiter];
           curtask = Object.keys(curdata)[0];
           endtime = endtime + Object.values(curdata)[0];
           curiter = curiter + 1;
         }
-      }, 100)
+        document.getElementById('timer').innerHTML = formed;
+        document.getElementById('curtask').innerHTML = curtask;
+        document.getElementById('timer').style.visibility = 'visible';
+      }, 0)
 
     }
   </script>
