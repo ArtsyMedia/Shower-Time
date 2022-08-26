@@ -1,0 +1,151 @@
+<head>
+  <title>Shower Time</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script src="https://raw.githubusercontent.com/mckamey/countdownjs/master/countdown.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap');
+
+    :root {
+      --gray-000: #f8f9fa;
+      --gray-100: #f1f3f5;
+      --gray-200: #e9ecef;
+      --gray-300: #dee2e6;
+      --gray-400: #ced4da;
+      --gray-500: #adb5bd;
+      --gray-600: #868e96;
+      --gray-700: #495057;
+      --gray-800: #343a40;
+      --gray-900: #212529;
+      --dark-poole-001: hsl(200, 3%, 12%);
+      --dark-poole-002: hsl(0, 0%, 85%);
+      --dark-poole-link-color: rgba(255, 255, 255, 0.75);
+      --dark-poole-link-hover: #fff;
+
+      --red: #fa5252;
+      --pink: #e64980;
+      --grape: #be4bdb;
+      --purple: #7950f2;
+      --indigo: #4c6ef5;
+      --blue: #228be6;
+      --cyan: #15aabf;
+      --teal: #12b886;
+      --green: #40c057;
+      --yellow: #fab005;
+      --orange: #fd7e14;
+    }
+
+    #phone {
+      background-color: var(--dark-poole-001);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      word-break: break-all;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: Comfortaa;
+    }
+
+    .user {
+      width: 150;
+      height: 150;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      position: relative;
+      border: none;
+      cursor: pointer;
+      border-radius: 25px;
+      font-family: Comfortaa;
+      font-size: 3em;
+      color: var(--dark-poole-001);
+    }
+
+    h1,
+    p {
+      color: white;
+    }
+
+    br {
+      flex-basis: 100%;
+      height: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='phone'>
+    <button class='user' id='Max' onclick='userSelection(this.id)' style='background-color: var(--blue)'>MP</button>
+    <button class='user' id='Ruthie' onclick='userSelection(this.id)' style='background-color: var(--green)'>RP</button>
+    <button class='user' id='Shayna' onclick='userSelection(this.id)' style='background-color: var(--red)'>SP</button>
+  </div>
+
+  <script>
+    data = {
+      'Max': [{
+        'Shampoo/Conditioner': 30000
+      }, {
+        'Upper Body': 60000
+      }, {
+        'Lower Body': 60000
+      }, {
+        'Private Parts': 30000
+      }, {
+        'Face': 30000
+      }],
+      'Ruthie': [{}, {}, {}, {}, {}],
+      'Shayna': [{}, {}, {}, {}, {}]
+    }
+
+    function padTo2Digits(num) {
+      return num.toString().padStart(2, '0');
+    }
+
+    function convertMsToTime(milliseconds) {
+      let seconds = Math.floor(milliseconds / 1000);
+      let minutes = Math.floor(seconds / 60);
+      let hours = Math.floor(minutes / 60);
+
+      seconds = seconds % 60;
+      minutes = minutes % 60;
+
+      // 👇️ If you don't want to roll hours over, e.g. 24 to 00
+      // 👇️ comment (or remove) the line below
+      // commenting next line gets you `24:00:00` instead of `00:00:00`
+      // or `36:15:31` instead of `12:15:31`, etc.
+      hours = hours % 24;
+
+      return `${padTo2Digits(minutes)}:${padTo2Digits(
+    seconds,
+  )}`;
+    }
+
+    function userSelection(name) {
+      document.getElementById('phone').style.display = 'block';
+      var userdata = data[name];
+      var totalms = 0;
+      var curtask = '';
+      for (const i of userdata) {
+        totalms = totalms + (Object.values(i)[0]);
+      }
+      totalmin = moment.duration(totalms, 'milliseconds').asMinutes();
+      document.getElementById('phone').innerHTML = '<h1 id="curtask">Current Task</h1>' + '<br />' + '<h1 id="timer">Timer</h1>';
+      var endtime = new Date().getTime();
+      var curiter = 0;
+      var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = endtime - now;
+        var formed = convertMsToTime(distance);
+        document.getElementById('timer').innerHTML = formed;
+        document.getElementById('curtask').innerHTML = curtask;
+        if (distance <= 0) {
+          curdata = userdata[curiter];
+          curtask = Object.keys(curdata)[0];
+          endtime = endtime + Object.values(curdata)[0];
+          curiter = curiter + 1;
+        }
+      }, 100)
+
+    }
+  </script>
+</body>
