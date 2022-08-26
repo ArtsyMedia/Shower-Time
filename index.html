@@ -129,7 +129,7 @@
         totalms = totalms + (Object.values(i)[0]);
       }
       totalmin = moment.duration(totalms, 'milliseconds').asMinutes();
-      document.getElementById('phone').innerHTML = '<h1 id="curtask">Current Task</h1>' + '<br />' + '<h1 id="timer">00:00</h1>';
+      document.getElementById('phone').innerHTML = '<h1 id="curtask"></h1>' + '<br />' + '<h1 id="timer"></h1>';
       var endtime = new Date().getTime();
       var curiter = 0;
       var x = setInterval(function() {
